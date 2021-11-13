@@ -13,6 +13,11 @@ const Clase = db.define('Clase',{
         allowNull: false,
 
     }
+    ,precio:{
+        type:DataTypes.DOUBLE,
+        allowNull: false,
+
+    }
 
     ,estado : {
         type : DataTypes.BOOLEAN

@@ -59,9 +59,9 @@ export const postSeccion = async ( req: Request,  res : Response)=>{
       const {  estado,... seccionBody} = body;
       const seccion =  Seccion.build(seccionBody);
       await seccion.save();
-      res.json({
+      res.json(
           seccion
-      })
+      )
     } catch (error) {
         console.log(error);
         res.status(500).json({

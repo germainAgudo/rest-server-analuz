@@ -21,9 +21,13 @@ const Producto = db.define('Producto',{
         type:DataTypes.TEXT,
         allowNull: false,
 
-    }
+    },
 
-    ,
+    precio:{
+        type:DataTypes.DOUBLE,
+        allowNull: false,
+
+    }
 
 }
 

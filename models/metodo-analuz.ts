@@ -16,6 +16,7 @@ const MetodoAnaluz = db.define('MetodoAnaluz',{
         type : DataTypes.BOOLEAN
     },
 
+
     img:{
         type:DataTypes.TEXT,
     },

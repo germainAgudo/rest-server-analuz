@@ -66,9 +66,7 @@ const postProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const { estado } = body, productoBody = __rest(body, ["estado"]);
         const producto = producto_1.default.build(productoBody);
         yield producto.save();
-        res.json({
-            producto
-        });
+        res.json(producto);
     }
     catch (error) {
         console.log(error);

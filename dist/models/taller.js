@@ -17,6 +17,10 @@ const Taller = connection_1.default.define('Taller', {
     estado: {
         type: sequelize_1.DataTypes.BOOLEAN
     },
+    precio: {
+        type: sequelize_1.DataTypes.DOUBLE,
+        allowNull: false,
+    }
 }, {
     freezeTableName: true,
     timestamps: false

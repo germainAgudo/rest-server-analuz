@@ -21,7 +21,11 @@ const Tratamiento = connection_1.default.define('Tratamiento', {
     descripcion: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
-    }
+    },
+    precio: {
+        type: sequelize_1.DataTypes.DOUBLE,
+        allowNull: false,
+    },
 }, {
     freezeTableName: true,
     timestamps: false

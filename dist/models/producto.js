@@ -21,6 +21,10 @@ const Producto = connection_1.default.define('Producto', {
         type: sequelize_1.DataTypes.TEXT,
         allowNull: false,
     },
+    precio: {
+        type: sequelize_1.DataTypes.DOUBLE,
+        allowNull: false,
+    }
 }, {
     freezeTableName: true,
     timestamps: false

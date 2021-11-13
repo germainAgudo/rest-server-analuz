@@ -14,6 +14,10 @@ const Clase = connection_1.default.define('Clase', {
         type: sequelize_1.DataTypes.TEXT,
         allowNull: false,
     },
+    precio: {
+        type: sequelize_1.DataTypes.DOUBLE,
+        allowNull: false,
+    },
     estado: {
         type: sequelize_1.DataTypes.BOOLEAN
     },

@@ -2,7 +2,8 @@
 import { Request, Response } from "express";
 import MetodoPago from "../models/metodoPago";
 
-
+import path from "path";
+import fs  from "fs"
 
 export const getMetodosPagos = async ( req : Request, res : Response)=> {
     const query = { estado : true };
@@ -45,8 +46,10 @@ export const postMetodoPago = async ( req : Request, res : Response )=>{
     const { body } = req;
 try {
     const {nombre } = body;
+    console.log(body);
+    
     const data = {
-        nombre: nombre.trim().ToUpperCase(),
+        nombre: nombre.trim().toUpperCase(),
     }
     const metodo_pago = MetodoPago.build(data);
     await metodo_pago.save();
@@ -65,7 +68,7 @@ export const putMetodoPago = async ( req : Request, res : Response )=>{
 try {
     const { nombre } = body;
     const data ={
-        nombre: nombre.trim().ToUpperCase(),
+        nombre: nombre.trim().toUpperCase(),
     }
     const metodoPago = await MetodoPago.findByPk( id );
     await metodoPago?.update( data );
@@ -95,7 +98,41 @@ try {
 
 
 
+export const putUploadMetodoPago = async ( req : Request, res : Response )=>{
+    const { id } = req.params;
+     
+   try {
+if (!req.file) {
+    return res.status(400).json({
+        msg: `La imagen es obligatoria`
+    })
+}
+const metodo_pago  = await MetodoPago.findByPk(id);
+if (metodo_pago?.getDataValue('imgurl') != null) {
+    const pathImagen = path.resolve(metodo_pago?.getDataValue('imgurl'))
+    console.log(pathImagen);
+    
+   if (fs.existsSync( pathImagen)) {
+      await fs.unlinkSync( pathImagen);
+     }  
+}
 
+metodo_pago?.setDataValue('imgurl', req.file?.path );
+metodo_pago?.save()
+
+
+res.json({
+    metodo_pago
+});
+
+
+   } catch (error) {
+       console.log(error);
+       res.status(500).json({
+           msg: 'Hable con el administrador'
+       });  
+   }
+   }
 
 
 

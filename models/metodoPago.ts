@@ -12,7 +12,7 @@ const MetodoPago = db.define('MetodoPago',{
         type : DataTypes.BOOLEAN
     },
 
-    img:{
+    imgurl:{
         type:DataTypes.TEXT,
     },
 

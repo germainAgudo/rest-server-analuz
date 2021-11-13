@@ -20,6 +20,8 @@ const auth_1 = __importDefault(require("../routes/auth"));
 const clases_1 = __importDefault(require("../routes/clases"));
 const testimonios_1 = __importDefault(require("../routes/testimonios"));
 const aprendizajes_1 = __importDefault(require("../routes/aprendizajes"));
+const metodo_pago_1 = __importDefault(require("../routes/metodo-pago"));
+const uploads_1 = __importDefault(require("../routes/uploads"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
 class Server {
@@ -31,7 +33,9 @@ class Server {
             ,
             clase: '/api/clases',
             testimonios: '/api/testimonios',
-            aprendizajes: '/api/aprendizajes'
+            aprendizajes: '/api/aprendizajes',
+            metodosPago: '/api/metodos-pago',
+            uploads: '/api/uploads'
         };
         {
             this.app = (0, express_1.default)();
@@ -76,6 +80,8 @@ class Server {
         // this.app.use( this.apiPaths.secciones,seccionRoutes );   
         this.app.use(this.apiPaths.testimonios, testimonios_1.default);
         this.app.use(this.apiPaths.aprendizajes, aprendizajes_1.default);
+        this.app.use(this.apiPaths.metodosPago, metodo_pago_1.default);
+        this.app.use(this.apiPaths.uploads, uploads_1.default);
     }
 }
 exports.default = Server;

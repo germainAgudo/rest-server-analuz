@@ -24,7 +24,13 @@ const Tratamiento = db.define('Tratamiento',{
     descripcion:{
         type: DataTypes.STRING,
         allowNull: false,
-    }
+    },
+
+    precio:{
+        type:DataTypes.DOUBLE,
+        allowNull: false,
+
+    },
 
    
 

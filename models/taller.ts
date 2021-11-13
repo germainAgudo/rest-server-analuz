@@ -18,6 +18,14 @@ const Taller = db.define('Taller',{
         type : DataTypes.BOOLEAN
     },
 
+
+    precio:{
+        type:DataTypes.DOUBLE,
+        allowNull: false,
+
+    }
+
+
 }
 
 ,{

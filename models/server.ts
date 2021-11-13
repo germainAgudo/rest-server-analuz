@@ -6,7 +6,8 @@ import loginRoutes from '../routes/auth';
 import claseRouter from '../routes/clases';
 import testimonioRoutes from '../routes/testimonios';
 import aprendizajeRoutes from "../routes/aprendizajes";
-
+import metodosPagoRoutes from "../routes/metodo-pago";
+import uploadsRoutes from "../routes/uploads";
 
 
 import cors from 'cors'
@@ -23,6 +24,8 @@ private apiPaths  = {
     , clase : '/api/clases'
     , testimonios : '/api/testimonios'
     , aprendizajes : '/api/aprendizajes'
+    , metodosPago : '/api/metodos-pago'
+    , uploads : '/api/uploads'
 }
     constructor(){{ 
         this.app = express();
@@ -86,6 +89,8 @@ private apiPaths  = {
         // this.app.use( this.apiPaths.secciones,seccionRoutes );   
         this.app.use( this.apiPaths.testimonios, testimonioRoutes );
         this.app.use( this.apiPaths.aprendizajes, aprendizajeRoutes );
+        this.app.use( this.apiPaths.metodosPago, metodosPagoRoutes );
+        this.app.use( this.apiPaths.uploads, uploadsRoutes);
     }
 
 

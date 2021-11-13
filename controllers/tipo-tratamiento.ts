@@ -46,7 +46,7 @@ export const postTipoTratamiento = async ( req : Request, res : Response )=>{
 try {
     const {nombre } = body;
     const data = {
-        nombre: nombre.trim().ToUpperCase(),
+        nombre: nombre.trim().toUpperCase(),
     }
     const tipo_tratamiento = TipoTratamiento.build(data);
     await tipo_tratamiento.save();
@@ -65,7 +65,7 @@ export const putTipoTratamiento = async ( req : Request, res : Response )=>{
 try {
     const { nombre } = body;
     const data ={
-        nombre: nombre.trim().ToUpperCase(),
+        nombre: nombre.trim().toUpperCase(),
     }
     const tipo_tratamiento = await TipoTratamiento.findByPk( id );
     await tipo_tratamiento?.update( data );

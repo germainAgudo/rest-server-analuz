@@ -54,7 +54,7 @@ const postTipoTratamiento = (req, res) => __awaiter(void 0, void 0, void 0, func
     try {
         const { nombre } = body;
         const data = {
-            nombre: nombre.trim().ToUpperCase(),
+            nombre: nombre.trim().toUpperCase(),
         };
         const tipo_tratamiento = tipoTratamiento_1.default.build(data);
         yield tipo_tratamiento.save();
@@ -74,7 +74,7 @@ const putTipoTratamiento = (req, res) => __awaiter(void 0, void 0, void 0, funct
     try {
         const { nombre } = body;
         const data = {
-            nombre: nombre.trim().ToUpperCase(),
+            nombre: nombre.trim().toUpperCase(),
         };
         const tipo_tratamiento = yield tipoTratamiento_1.default.findByPk(id);
         yield (tipo_tratamiento === null || tipo_tratamiento === void 0 ? void 0 : tipo_tratamiento.update(data));

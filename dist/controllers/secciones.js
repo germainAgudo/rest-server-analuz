@@ -68,9 +68,7 @@ const postSeccion = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const { estado } = body, seccionBody = __rest(body, ["estado"]);
         const seccion = seccion_1.default.build(seccionBody);
         yield seccion.save();
-        res.json({
-            seccion
-        });
+        res.json(seccion);
     }
     catch (error) {
         console.log(error);

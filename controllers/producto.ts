@@ -47,9 +47,9 @@ try {
     const {  estado,... productoBody} = body;
     const producto =  Producto.build(productoBody);
     await producto.save();
-    res.json({
+    res.json(
         producto
-    })    
+    )    
 } catch (error) {
     console.log(error);
     res.status(500).json({

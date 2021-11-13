@@ -13,7 +13,7 @@ const MetodoPago = connection_1.default.define('MetodoPago', {
     estado: {
         type: sequelize_1.DataTypes.BOOLEAN
     },
-    img: {
+    imgurl: {
         type: sequelize_1.DataTypes.TEXT,
     },
 }, {
