@@ -23,7 +23,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteMetodoAnaluz = exports.putMetodoAnaluz = exports.postMetodoAnaluz = exports.getMetodoAnaluz = exports.getMetodosAnaluz = void 0;
+exports.getUploadImagen = exports.putUploadImagen = exports.deleteMetodoAnaluz = exports.putMetodoAnaluz = exports.postMetodoAnaluz = exports.getMetodoAnaluz = exports.getMetodosAnaluz = void 0;
+const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
 const metodo_analuz_1 = __importDefault(require("../models/metodo-analuz"));
 const getMetodosAnaluz = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const query = { estado: true };
@@ -108,4 +110,56 @@ const deleteMetodoAnaluz = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.deleteMetodoAnaluz = deleteMetodoAnaluz;
+const putUploadImagen = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const { id } = req.params;
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                msg: `La imagen es obligatoria`
+            });
+        }
+        const metodo_analuz = yield metodo_analuz_1.default.findByPk(id);
+        if ((metodo_analuz === null || metodo_analuz === void 0 ? void 0 : metodo_analuz.getDataValue('imgurl')) != null) {
+            const pathImagen = path_1.default.resolve(metodo_analuz === null || metodo_analuz === void 0 ? void 0 : metodo_analuz.getDataValue('imgurl'));
+            if (fs_1.default.existsSync(pathImagen)) {
+                fs_1.default.unlinkSync(pathImagen);
+            }
+        }
+        metodo_analuz === null || metodo_analuz === void 0 ? void 0 : metodo_analuz.setDataValue('imgurl', (_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
+        metodo_analuz === null || metodo_analuz === void 0 ? void 0 : metodo_analuz.save();
+        res.json({
+            metodo_analuz
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Hable con el administrador'
+        });
+    }
+});
+exports.putUploadImagen = putUploadImagen;
+const getUploadImagen = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const metodo_analuz = yield metodo_analuz_1.default.findByPk(id);
+        if ((metodo_analuz === null || metodo_analuz === void 0 ? void 0 : metodo_analuz.getDataValue('imgurl')) != null) {
+            const pathImagen = path_1.default.resolve(metodo_analuz === null || metodo_analuz === void 0 ? void 0 : metodo_analuz.getDataValue('imgurl'));
+            if (fs_1.default.existsSync(pathImagen)) {
+                //   await fs.unlinkSync( pathImagen);
+                return res.sendFile(pathImagen);
+            }
+        }
+        const pathImagen = path_1.default.resolve(__dirname, '../../assets/no-imagen.png');
+        res.sendFile(pathImagen);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Hable con el administrador'
+        });
+    }
+});
+exports.getUploadImagen = getUploadImagen;
 //# sourceMappingURL=metodo-analuz.js.map

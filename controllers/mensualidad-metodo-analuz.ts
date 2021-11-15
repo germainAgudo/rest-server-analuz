@@ -44,7 +44,29 @@ try {
 export const postMensualidadMetodo = async ( req : Request, res : Response )=>{
     const { body } = req;
 try {
-    const { estado, ... mensualidadMetodoBody } = body;
+    const dias_restantes = 30;
+    const {  metodoanaluz_id } = body;
+    const mensualidadMetodoBody= {
+        metodoanaluz_id,
+        dias_restantes,
+        usuario_id : req.usuario?.id
+    }
+
+const mensualidad = await MensualidadMetodoAnaluz.findOne({
+    where:{
+        estado: true,
+        usuario_id : req.usuario?.id,
+        metodoanaluz_id: metodoanaluz_id,
+    }
+})
+
+if (mensualidad) {
+    return res.status(400).json({
+        msg:"Este usuario ya cuenta con una mensualidad vigente "
+    })
+}
+
+
     const mensualidad_metodo = MensualidadMetodoAnaluz.build( mensualidadMetodoBody);
     await mensualidad_metodo.save();
     res.json(mensualidad_metodo)
@@ -60,7 +82,7 @@ export const putMensualidadMetodo = async ( req : Request, res : Response )=>{
  const { id } = req.params;
     const { body } = req;
 try {
-    const { estado, ... mensualidadMetodoBody } = body;
+    const { estado,usuario_id, metodoanaluz_id, ... mensualidadMetodoBody } = body;
     const mensualidad_metodo = await MensualidadMetodoAnaluz.findByPk( id );
     await mensualidad_metodo?.update( mensualidadMetodoBody );
     res.json(mensualidad_metodo);

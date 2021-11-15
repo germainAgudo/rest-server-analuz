@@ -10,6 +10,9 @@ const MensualidadMetodoAnaluz = db.define('MensualidadMetodoAnaluz',{
         type : DataTypes.BOOLEAN
     },
 
+    fecha_pago : {
+        type : DataTypes.DATE
+    },
 
     dias_restantes :{
         type: DataTypes.FLOAT,

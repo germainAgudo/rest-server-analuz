@@ -32,6 +32,7 @@ router.post('/'
         , esAdminRole
         , check('nombre', 'El nombre es obligatorio').not().isEmpty()
         , check('descripcion', 'La descripción es obligatoria').not().isEmpty()
+        , check('precio', 'El precio es obligatoria').isNumeric()
         , validarCampos    
     ]
 , postClase

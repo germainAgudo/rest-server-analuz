@@ -19,6 +19,7 @@ router.post('/', [
     validar_roles_1.esAdminRole,
     (0, express_validator_1.check)('nombre', 'El nombre es obligatorio').not().isEmpty(),
     (0, express_validator_1.check)('descripcion', 'La descripción es obligatoria').not().isEmpty(),
+    (0, express_validator_1.check)('precio', 'El precio es obligatoria').isNumeric(),
     validar_campos_1.validarCampos
 ], clases_1.postClase);
 router.put('/:id', [

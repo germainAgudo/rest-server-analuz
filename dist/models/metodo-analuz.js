@@ -17,7 +17,7 @@ const MetodoAnaluz = connection_1.default.define('MetodoAnaluz', {
     estado: {
         type: sequelize_1.DataTypes.BOOLEAN
     },
-    img: {
+    imgurl: {
         type: sequelize_1.DataTypes.TEXT,
     },
     nivel: {

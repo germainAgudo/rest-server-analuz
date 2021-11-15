@@ -17,7 +17,7 @@ const MetodoAnaluz = db.define('MetodoAnaluz',{
     },
 
 
-    img:{
+    imgurl:{
         type:DataTypes.TEXT,
     },
     nivel:{

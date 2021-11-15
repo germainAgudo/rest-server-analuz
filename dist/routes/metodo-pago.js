@@ -48,9 +48,22 @@ router.put('/:coleccion/:id', [
     (0, express_validator_1.check)('id', 'El id es obligatorio').not().isEmpty(),
     (0, express_validator_1.check)('id').custom(db_validatoe_1.existeMetodoPagoPorId),
     (0, express_validator_1.check)('coleccion').custom(c => (0, validar_informacion_1.coleccionesPermitidas)(c, [
-        'actualizar-img'
+        'actualizar-imagen'
     ])),
     validar_campos_1.validarCampos
 ], validar_uploads_1.uploads_metodoPago, metodo_pago_1.putUploadMetodoPago);
+router.get('/:coleccion/:id', [
+    validar_jwt_1.validarJWT,
+    validar_roles_1.esAdminRole,
+    (0, express_validator_1.check)('id', 'El id es obligatorio').not().isEmpty(),
+    (0, express_validator_1.check)('id').custom(db_validatoe_1.existeMetodoPagoPorId),
+    (0, express_validator_1.check)('coleccion').custom(c => (0, validar_informacion_1.coleccionesPermitidas)(c, [
+        'obtener-imagen'
+    ])),
+    validar_campos_1.validarCampos
+], 
+// uploads_metodoPago
+// , 
+metodo_pago_1.getUploadMetodoPago);
 exports.default = router;
 //# sourceMappingURL=metodo-pago.js.map

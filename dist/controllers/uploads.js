@@ -17,6 +17,7 @@ const metodoPago_1 = __importDefault(require("../models/metodoPago"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const usuario_1 = __importDefault(require("../models/usuario"));
+// import { uploads_metodoPago } from "../helpers/validar-uploads";
 // const storage = multer.diskStorage(
 //     {
 //     destination: (req, file , cb)=>{

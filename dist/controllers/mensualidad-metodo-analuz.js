@@ -61,9 +61,28 @@ const getMensualidadMetodo = (req, res) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.getMensualidadMetodo = getMensualidadMetodo;
 const postMensualidadMetodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     const { body } = req;
     try {
-        const { estado } = body, mensualidadMetodoBody = __rest(body, ["estado"]);
+        const dias_restantes = 30;
+        const { metodoanaluz_id } = body;
+        const mensualidadMetodoBody = {
+            metodoanaluz_id,
+            dias_restantes,
+            usuario_id: (_a = req.usuario) === null || _a === void 0 ? void 0 : _a.id
+        };
+        const mensualidad = yield mensualidad_metodoanaluz_1.default.findOne({
+            where: {
+                estado: true,
+                usuario_id: (_b = req.usuario) === null || _b === void 0 ? void 0 : _b.id,
+                metodoanaluz_id: metodoanaluz_id,
+            }
+        });
+        if (mensualidad) {
+            return res.status(400).json({
+                msg: "Este usuario ya cuenta con una mensualidad vigente "
+            });
+        }
         const mensualidad_metodo = mensualidad_metodoanaluz_1.default.build(mensualidadMetodoBody);
         yield mensualidad_metodo.save();
         res.json(mensualidad_metodo);
@@ -80,7 +99,7 @@ const putMensualidadMetodo = (req, res) => __awaiter(void 0, void 0, void 0, fun
     const { id } = req.params;
     const { body } = req;
     try {
-        const { estado } = body, mensualidadMetodoBody = __rest(body, ["estado"]);
+        const { estado, usuario_id, metodoanaluz_id } = body, mensualidadMetodoBody = __rest(body, ["estado", "usuario_id", "metodoanaluz_id"]);
         const mensualidad_metodo = yield mensualidad_metodoanaluz_1.default.findByPk(id);
         yield (mensualidad_metodo === null || mensualidad_metodo === void 0 ? void 0 : mensualidad_metodo.update(mensualidadMetodoBody));
         res.json(mensualidad_metodo);

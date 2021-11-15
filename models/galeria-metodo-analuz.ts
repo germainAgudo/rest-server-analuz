@@ -19,7 +19,7 @@ const GaleriaMetodoAnaluz = db.define('GaleriaMetodoAnaluz',{
         }
     },
 
-    video_url:{
+    videourl:{
         type: DataTypes.TEXT,
         // allowNull: false,
     },

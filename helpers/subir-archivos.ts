@@ -5,13 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 
-export const subirArchivo = ( files : any, extensionesValidas = ['png','jpg','jpeg','gif'], carpeta = '' ) => {
+const subirArchivo = ( files : any, extensionesValidas = ['png','jpg','jpeg','gif'], carpeta = '' ) => {
 
     return new Promise( (resolve, reject) => {///resolve si todo sale bien y reject si sale mal
 
         //Se extrae el nombre del archivo
-        const {  originalname } = files;
-        const nombreCortado =  originalname.split('.');
+        const { archivo } = files;
+        const nombreCortado = archivo.name.split('.');
         const extension = nombreCortado[ nombreCortado.length - 1 ];
 
         // Validar la extension
@@ -22,7 +22,7 @@ export const subirArchivo = ( files : any, extensionesValidas = ['png','jpg','jp
         const nombreTemp = uuidv4() + '.' + extension;
         const uploadPath = path.join( __dirname, '../uploads/', carpeta, nombreTemp );
 
-        originalname.mv(uploadPath, (err : any) => {
+        archivo.mv(uploadPath, (err : any) => {
             if (err) {
                 reject(err);
             }

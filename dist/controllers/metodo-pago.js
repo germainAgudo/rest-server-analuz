@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.putUploadMetodoPago = exports.deleteMetodoPago = exports.putMetodoPago = exports.postMetodoPago = exports.getMetodoPago = exports.getMetodosPagos = void 0;
+exports.getUploadMetodoPago = exports.putUploadMetodoPago = exports.deleteMetodoPago = exports.putMetodoPago = exports.postMetodoPago = exports.getMetodoPago = exports.getMetodosPagos = void 0;
 const metodoPago_1 = __importDefault(require("../models/metodoPago"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
@@ -120,7 +120,7 @@ const putUploadMetodoPago = (req, res) => __awaiter(void 0, void 0, void 0, func
             const pathImagen = path_1.default.resolve(metodo_pago === null || metodo_pago === void 0 ? void 0 : metodo_pago.getDataValue('imgurl'));
             console.log(pathImagen);
             if (fs_1.default.existsSync(pathImagen)) {
-                yield fs_1.default.unlinkSync(pathImagen);
+                fs_1.default.unlinkSync(pathImagen);
             }
         }
         metodo_pago === null || metodo_pago === void 0 ? void 0 : metodo_pago.setDataValue('imgurl', (_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
@@ -137,4 +137,28 @@ const putUploadMetodoPago = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.putUploadMetodoPago = putUploadMetodoPago;
+const getUploadMetodoPago = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const metodo_pago = yield metodoPago_1.default.findByPk(id);
+        if ((metodo_pago === null || metodo_pago === void 0 ? void 0 : metodo_pago.getDataValue('imgurl')) != null) {
+            const pathImagen = path_1.default.resolve(metodo_pago === null || metodo_pago === void 0 ? void 0 : metodo_pago.getDataValue('imgurl'));
+            console.log(pathImagen);
+            if (fs_1.default.existsSync(pathImagen)) {
+                //   await fs.unlinkSync( pathImagen);
+                return res.sendFile(pathImagen);
+            }
+        }
+        console.log(__dirname);
+        const pathImagen = path_1.default.resolve(__dirname, '../../assets/no-imagen.png');
+        res.sendFile(pathImagen);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Hable con el administrador'
+        });
+    }
+});
+exports.getUploadMetodoPago = getUploadMetodoPago;
 //# sourceMappingURL=metodo-pago.js.map

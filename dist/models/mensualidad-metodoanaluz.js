@@ -11,6 +11,9 @@ const MensualidadMetodoAnaluz = connection_1.default.define('MensualidadMetodoAn
     estado: {
         type: sequelize_1.DataTypes.BOOLEAN
     },
+    fecha_pago: {
+        type: sequelize_1.DataTypes.DATE
+    },
     dias_restantes: {
         type: sequelize_1.DataTypes.FLOAT,
         allowNull: false,

@@ -7,7 +7,7 @@ import {
 
 } from "../controllers/uploads";
 import { existeMetodoPagoPorId } from "../helpers/db-validatoe";
-import { uploads_metodoPago } from "../helpers/validar-uploads";
+// import { uploads_metodoPago } from "../helpers/validar-uploads";
 import { validarCampos } from "../middlewares/validar-campos";
 import { coleccionesPermitidas } from "../middlewares/validar-informacion";
 import { validarJWT } from "../middlewares/validar-jwt";
@@ -64,10 +64,10 @@ router.put('/:coleccion/:id'
         ]) )
         , validarCampos   
     ],
-    uploads_metodoPago
-    , validarCampos   
+    // uploads_metodoPago
   
-    , 
+  
+
 actualizarImagen
 );
 

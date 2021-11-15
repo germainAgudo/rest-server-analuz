@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { deleteMetodoPago, getMetodoPago, getMetodosPagos, postMetodoPago, putMetodoPago, putUploadMetodoPago } from "../controllers/metodo-pago";
+import { deleteMetodoPago, getMetodoPago, getMetodosPagos, getUploadMetodoPago, postMetodoPago, putMetodoPago, putUploadMetodoPago } from "../controllers/metodo-pago";
 import { existeMetodoPagoPorId, existeNombreMetodoPago } from "../helpers/db-validatoe";
 import { uploads_metodoPago } from "../helpers/validar-uploads";
 import { validarCampos } from "../middlewares/validar-campos";
@@ -79,7 +79,7 @@ router.put('/:coleccion/:id'
         , check('id').custom( existeMetodoPagoPorId)  
         , check('coleccion').custom(c=>coleccionesPermitidas
             (c,[
-            'actualizar-img'
+            'actualizar-imagen'
           
         ]) )
         , validarCampos   
@@ -87,6 +87,24 @@ router.put('/:coleccion/:id'
     uploads_metodoPago
     , 
 putUploadMetodoPago
+);
+router.get('/:coleccion/:id'
+,
+    [
+        validarJWT
+        , esAdminRole
+        , check('id','El id es obligatorio').not().isEmpty()
+        , check('id').custom( existeMetodoPagoPorId)  
+        , check('coleccion').custom(c=>coleccionesPermitidas
+            (c,[
+            'obtener-imagen'
+          
+        ]) )
+        , validarCampos   
+    ],
+    // uploads_metodoPago
+    // , 
+getUploadMetodoPago
 );
 export default router;
 

@@ -4,7 +4,7 @@ const express_1 = require("express");
 const express_validator_1 = require("express-validator");
 const uploads_1 = require("../controllers/uploads");
 const db_validatoe_1 = require("../helpers/db-validatoe");
-const validar_uploads_1 = require("../helpers/validar-uploads");
+// import { uploads_metodoPago } from "../helpers/validar-uploads";
 const validar_campos_1 = require("../middlewares/validar-campos");
 const validar_informacion_1 = require("../middlewares/validar-informacion");
 const validar_jwt_1 = require("../middlewares/validar-jwt");
@@ -45,7 +45,9 @@ router.put('/:coleccion/:id', [
         'usuario'
     ])),
     validar_campos_1.validarCampos
-], validar_uploads_1.uploads_metodoPago, validar_campos_1.validarCampos, uploads_1.actualizarImagen);
+], 
+// uploads_metodoPago
+uploads_1.actualizarImagen);
 // router.delete('/'
 // ,
 //     [

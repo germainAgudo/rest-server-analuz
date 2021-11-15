@@ -4,6 +4,7 @@ declare global {
         interface Request {
             usuario? : Record<Any,any>
             // usuario? : Record<String,any>
+            // file_error? : Record<any>;
         }
     }
 }

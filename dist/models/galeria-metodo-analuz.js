@@ -18,7 +18,7 @@ const GaleriaMetodoAnaluz = connection_1.default.define('GaleriaMetodoAnaluz', {
             key: 'id'
         }
     },
-    video_url: {
+    videourl: {
         type: sequelize_1.DataTypes.TEXT,
         // allowNull: false,
     },

@@ -8,23 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteGaleriaTaller = exports.putGaleriaTaller = exports.postGaleriaTaller = exports.getGaleriaTaller = exports.getGaleriasTalleres = void 0;
 const galeria_taller_1 = __importDefault(require("../models/galeria-taller"));
+// import path from "path";
+const fs_1 = __importDefault(require("fs"));
+const taller_1 = __importDefault(require("../models/taller"));
 const getGaleriasTalleres = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const query = { estado: true };
     try {
@@ -63,7 +55,35 @@ exports.getGaleriaTaller = getGaleriaTaller;
 const postGaleriaTaller = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     try {
-        const { estado } = body, galeriaTallerBody = __rest(body, ["estado"]);
+        if (!req.file) {
+            return res.status(400).json({
+                msg: `La imagen es obligatoria`
+            });
+        }
+        if (!body.taller_id) {
+            const pathImagen = req.file.path;
+            if (fs_1.default.existsSync(pathImagen)) {
+                fs_1.default.unlinkSync(pathImagen);
+            }
+            return res.status(400).json({
+                msg: `El taller es obligatorio`
+            });
+        }
+        const { taller_id } = body;
+        const existe_id = yield taller_1.default.findByPk(taller_id);
+        if (!existe_id || !existe_id.getDataValue('estado')) {
+            const pathImagen = req.file.path;
+            if (fs_1.default.existsSync(pathImagen)) {
+                fs_1.default.unlinkSync(pathImagen);
+            }
+            return res.status(400).json({
+                msg: `El id ${taller_id} no existe`
+            });
+        }
+        const galeriaTallerBody = {
+            taller_id,
+            img: req.file.path
+        };
         const galeriaTaller = galeria_taller_1.default.build(galeriaTallerBody);
         yield galeriaTaller.save();
         res.json(galeriaTaller);

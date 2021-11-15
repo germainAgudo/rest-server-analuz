@@ -102,20 +102,26 @@ export const putUploadMetodoPago = async ( req : Request, res : Response )=>{
     const { id } = req.params;
      
    try {
+
+
+    
 if (!req.file) {
     return res.status(400).json({
         msg: `La imagen es obligatoria`
     })
 }
+
+
 const metodo_pago  = await MetodoPago.findByPk(id);
 if (metodo_pago?.getDataValue('imgurl') != null) {
     const pathImagen = path.resolve(metodo_pago?.getDataValue('imgurl'))
     console.log(pathImagen);
     
    if (fs.existsSync( pathImagen)) {
-      await fs.unlinkSync( pathImagen);
+    fs.unlinkSync( pathImagen);
      }  
 }
+
 
 metodo_pago?.setDataValue('imgurl', req.file?.path );
 metodo_pago?.save()
@@ -124,6 +130,51 @@ metodo_pago?.save()
 res.json({
     metodo_pago
 });
+
+
+   } catch (error) {
+       console.log(error);
+       res.status(500).json({
+           msg: 'Hable con el administrador'
+       });  
+   }
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+   export const getUploadMetodoPago = async ( req : Request, res : Response )=>{
+    const { id } = req.params;
+     
+   try {
+
+const metodo_pago  = await MetodoPago.findByPk(id);
+if (metodo_pago?.getDataValue('imgurl') != null) {
+    
+    const pathImagen = path.resolve(metodo_pago?.getDataValue('imgurl'))
+    console.log(pathImagen);
+    
+   if (fs.existsSync( pathImagen)) {
+    //   await fs.unlinkSync( pathImagen);
+    return res.sendFile(pathImagen);
+     }  
+}
+
+console.log(__dirname);
+
+const pathImagen = path.resolve(__dirname, '../../assets/no-imagen.png');
+res.sendFile(pathImagen)
+
+
 
 
    } catch (error) {

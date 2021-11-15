@@ -62,7 +62,7 @@ export const putTratamiento = async ( req : Request, res : Response )=>{
  const { id } = req.params;
     const { body } = req;
 try {
-    const {  estado,... tratamientoBody} = body;
+    const {  estado, tipotratamiento_id, ... tratamientoBody} = body;
     const tratamiento = await Tratamiento.findByPk( id );
     await tratamiento?.update( tratamientoBody );
     res.json(tratamiento);    

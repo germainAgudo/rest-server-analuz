@@ -8,6 +8,13 @@ import testimonioRoutes from '../routes/testimonios';
 import aprendizajeRoutes from "../routes/aprendizajes";
 import metodosPagoRoutes from "../routes/metodo-pago";
 import uploadsRoutes from "../routes/uploads";
+import metodoAnaluzRoutes from "../routes/metodo-analuz";
+import galeriaAnaluzRoutes from "../routes/galeria-metodo-analuz"
+import mensualidadAnaluzRoutes from "../routes/mensualidad-metodo-analuz";
+import tipoTratamientoRoutes from "../routes/tipo-tratamiento";
+import tratamientosRoutes from "../routes/tratamiento";
+import talleresRoutes from "../routes/talleres";
+import galeriaTallerRoutes from "../routes/galeria-taller";
 
 
 import cors from 'cors'
@@ -26,6 +33,13 @@ private apiPaths  = {
     , aprendizajes : '/api/aprendizajes'
     , metodosPago : '/api/metodos-pago'
     , uploads : '/api/uploads'
+    , metodosAnaluz : '/api/metodos-analuz'
+    , galeriaAnaluz : '/api/galeria-metodo-analuz'
+    , mensualidadAnaluz : '/api/mensualidades-metodo-analuz'
+    , tipoTratamiento : '/api/tipos-tratamientos'
+    , tratamientos : '/api/tratamientos'
+    , talleres : '/api/talleres'
+    , galeriaTaller : '/api/galeria-talleres'
 }
     constructor(){{ 
         this.app = express();
@@ -91,6 +105,13 @@ private apiPaths  = {
         this.app.use( this.apiPaths.aprendizajes, aprendizajeRoutes );
         this.app.use( this.apiPaths.metodosPago, metodosPagoRoutes );
         this.app.use( this.apiPaths.uploads, uploadsRoutes);
+        this.app.use( this.apiPaths.metodosAnaluz, metodoAnaluzRoutes);
+        this.app.use( this.apiPaths.galeriaAnaluz, galeriaAnaluzRoutes);
+        this.app.use( this.apiPaths.mensualidadAnaluz, mensualidadAnaluzRoutes);
+        this.app.use( this.apiPaths.tipoTratamiento , tipoTratamientoRoutes );
+        this.app.use( this.apiPaths.tratamientos , tratamientosRoutes );
+        this.app.use( this.apiPaths.talleres , talleresRoutes );
+        this.app.use( this.apiPaths.galeriaTaller , galeriaTallerRoutes );
     }
 
 

@@ -4,7 +4,7 @@ import MetodoPago from "../models/metodoPago";
 import path from "path";
 import fs  from "fs"
 import Usuario from "../models/usuario";
-import { uploads_metodoPago } from "../helpers/validar-uploads";
+// import { uploads_metodoPago } from "../helpers/validar-uploads";
 // const storage = multer.diskStorage(
     
 //     {

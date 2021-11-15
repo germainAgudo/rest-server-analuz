@@ -22,6 +22,13 @@ const testimonios_1 = __importDefault(require("../routes/testimonios"));
 const aprendizajes_1 = __importDefault(require("../routes/aprendizajes"));
 const metodo_pago_1 = __importDefault(require("../routes/metodo-pago"));
 const uploads_1 = __importDefault(require("../routes/uploads"));
+const metodo_analuz_1 = __importDefault(require("../routes/metodo-analuz"));
+const galeria_metodo_analuz_1 = __importDefault(require("../routes/galeria-metodo-analuz"));
+const mensualidad_metodo_analuz_1 = __importDefault(require("../routes/mensualidad-metodo-analuz"));
+const tipo_tratamiento_1 = __importDefault(require("../routes/tipo-tratamiento"));
+const tratamiento_1 = __importDefault(require("../routes/tratamiento"));
+const talleres_1 = __importDefault(require("../routes/talleres"));
+const galeria_taller_1 = __importDefault(require("../routes/galeria-taller"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
 class Server {
@@ -35,7 +42,14 @@ class Server {
             testimonios: '/api/testimonios',
             aprendizajes: '/api/aprendizajes',
             metodosPago: '/api/metodos-pago',
-            uploads: '/api/uploads'
+            uploads: '/api/uploads',
+            metodosAnaluz: '/api/metodos-analuz',
+            galeriaAnaluz: '/api/galeria-metodo-analuz',
+            mensualidadAnaluz: '/api/mensualidades-metodo-analuz',
+            tipoTratamiento: '/api/tipos-tratamientos',
+            tratamientos: '/api/tratamientos',
+            talleres: '/api/talleres',
+            galeriaTaller: '/api/galeria-talleres'
         };
         {
             this.app = (0, express_1.default)();
@@ -82,6 +96,13 @@ class Server {
         this.app.use(this.apiPaths.aprendizajes, aprendizajes_1.default);
         this.app.use(this.apiPaths.metodosPago, metodo_pago_1.default);
         this.app.use(this.apiPaths.uploads, uploads_1.default);
+        this.app.use(this.apiPaths.metodosAnaluz, metodo_analuz_1.default);
+        this.app.use(this.apiPaths.galeriaAnaluz, galeria_metodo_analuz_1.default);
+        this.app.use(this.apiPaths.mensualidadAnaluz, mensualidad_metodo_analuz_1.default);
+        this.app.use(this.apiPaths.tipoTratamiento, tipo_tratamiento_1.default);
+        this.app.use(this.apiPaths.tratamientos, tratamiento_1.default);
+        this.app.use(this.apiPaths.talleres, talleres_1.default);
+        this.app.use(this.apiPaths.galeriaTaller, galeria_taller_1.default);
     }
 }
 exports.default = Server;

@@ -82,7 +82,7 @@ const putTratamiento = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const { id } = req.params;
     const { body } = req;
     try {
-        const { estado } = body, tratamientoBody = __rest(body, ["estado"]);
+        const { estado, tipotratamiento_id } = body, tratamientoBody = __rest(body, ["estado", "tipotratamiento_id"]);
         const tratamiento = yield tratamiento_1.default.findByPk(id);
         yield (tratamiento === null || tratamiento === void 0 ? void 0 : tratamiento.update(tratamientoBody));
         res.json(tratamiento);
