@@ -1,0 +1,104 @@
+
+import { Request, Response } from "express";
+
+
+
+export const get = async ( req : Request, res : Response)=> {
+    const query = { estado : true };
+
+    try {
+        const [total, testimonios ] = await Promise.all([
+            Testimonio.findAndCountAll({ where: query }).then(result=>  result.count  )
+            , Testimonio.findAll({ where: query})
+            // , Seccion.findAll({ where:{ estado: true } })
+        ]) 
+        res.json({
+              total
+            , testimonios
+        })   
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Hable con el administrador'
+        });    
+    }
+}
+
+
+
+export const get = async ( req : Request, res : Response )=>{
+    const { id }= req.params;
+
+try {
+    
+} catch (error) {
+    console.log(error);
+    res.status(500).json({
+        msg: 'Hable con el administrador'
+    });  
+}
+}
+
+export const post = async ( req : Request, res : Response )=>{
+    const { body } = req;
+try {
+    
+} catch (error) {
+    console.log(error);
+    res.status(500).json({
+        msg: 'Hable con el administrador'
+    });  
+}
+}
+
+export const put = async ( req : Request, res : Response )=>{
+ const { id } = req.params;
+    const { body } = req;
+try {
+    
+} catch (error) {
+    console.log(error);
+    res.status(500).json({
+        msg: 'Hable con el administrador'
+    });  
+}
+}
+
+
+export const delete = async ( req : Request, res : Response )=>{
+  const { id } = req.params;
+try {
+    
+} catch (error) {
+    console.log(error);
+    res.status(500).json({
+        msg: 'Hable con el administrador'
+    });  
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+este es el ejemplo 
+const { count, rows } = await Project.findAndCountAll({
+  where: {
+    title: {
+      [Op.like]: 'foo%'
+    }
+  },
+  offset: 10,
+  limit: 2
+});
+console.log(count);
+console.log(rows);
+

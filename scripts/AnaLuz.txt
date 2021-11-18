@@ -1,0 +1,561 @@
+CREATE DATABASE analuz CHARACTER SET utf8mb4 COLLATE UTF8MB4_general_ci;
+
+
+USE analuz;
+
+#1
+CREATE TABLE usuario(
+id BIGINT NOT NULL AUTO_INCREMENT
+, nombre VARCHAR(100) NOT NULL
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, correo VARCHAR(100) NOT NULL
+, password VARCHAR(100) NOT NULL
+, numero_telefonico VARCHAR(100) NOT NULL
+, fecha_nacimiento DATE NOT NULL
+, sexo ENUM('h', 'm') NOT NULL 
+, img TEXT
+, rol VARCHAR(100) DEFAULT 'USUARIO' NOT NULL
+, createdAt DATE
+, updatedAt DATE
+, CONSTRAINT pkusuario PRIMARY KEY(id)
+, CONSTRAINT ukcorreousuario UNIQUE KEY(correo)
+) ENGINE = InnoDB;
+
+
+
+
+
+
+
+
+
+
+#2
+CREATE TABLE metodopago(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, imgurl TEXT 
+, nombre VARCHAR(100) NOT NULL
+, CONSTRAINT pkmetodopago PRIMARY KEY(id)
+) ENGINE = InnoDB;
+
+
+
+
+#3
+CREATE OR REPLACE TABLE metodoanaluz(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+
+, nombre VARCHAR(100) NOT NULL
+, descripcion TEXT NOT NULL
+, imgurl TEXT 
+, nivel INT NOT NULL
+, costo DOUBLE NOT NULL
+, CONSTRAINT pkmetodoanaluz PRIMARY KEY(id)
+
+) ENGINE = InnoDB;
+
+
+
+#4
+CREATE TABLE galeriametodoanaluz(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, metodoanaluz_id BIGINT
+, videourl TEXT 
+, CONSTRAINT pkgaleriametodoanaluz PRIMARY KEY(id)
+, CONSTRAINT fkgaleria_metodoanaluz FOREIGN KEY (metodoanaluz_id)
+REFERENCES metodoanaluz(id)
+) ENGINE = InnoDB;
+
+
+#5
+CREATE or replace TABLE mensualidadmetodoanaluz(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, fecha_pago DATETIME DEFAULT CURRENT_TIMESTAMP
+, dias_restantes FLOAT
+, estado_mensualidad ENUM('vigente', 'expirado')  DEFAULT 'vigente' 
+, metodoanaluz_id BIGINT
+, usuario_id BIGINT
+
+, CONSTRAINT pkmensualidadmetodoanaluz PRIMARY KEY(id)
+, CONSTRAINT fkmensualidad_metodoanaluz FOREIGN KEY (metodoanaluz_id)
+REFERENCES metodoanaluz(id)
+, CONSTRAINT fkusuario_metodoanaluz FOREIGN KEY (usuario_id)
+REFERENCES usuario(id)
+) ENGINE = InnoDB;
+
+
+#6
+CREATE TABLE tipotratamiento(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, nombre VARCHAR(100) NOT NULL
+, CONSTRAINT pktipotratamiento PRIMARY KEY(id)
+) ENGINE = InnoDB;
+
+
+#7
+CREATE TABLE tratamiento(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+,  tipotratamiento_id BIGINT
+, descripcion TEXT NOT NULL
+, precio DOUBLE NOT NULL
+, CONSTRAINT pktratamiento PRIMARY KEY(id)
+, CONSTRAINT fktipotratamiento_tratamiento FOREIGN KEY (tipotratamiento_id)
+REFERENCES tipotratamiento(id)
+) ENGINE = InnoDB;
+
+
+#8
+CREATE TABLE clase(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, precio DOUBLE NOT NULL
+, nombre VARCHAR(100) NOT NULL
+, descripcion TEXT NOT NULL
+, CONSTRAINT pkclase PRIMARY KEY(id)
+
+) ENGINE = InnoDB;
+
+
+
+#9
+CREATE TABLE taller(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, precio DOUBLE NOT NULL
+, nombre VARCHAR(100) NOT NULL
+, descripcion TEXT NOT NULL
+, CONSTRAINT pktaller PRIMARY KEY(id)
+
+) ENGINE = InnoDB;
+
+
+
+
+#10
+CREATE TABLE galeriataller(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, taller_id BIGINT
+, img TEXT NOT NULL
+, CONSTRAINT pktgaleriataller PRIMARY KEY(id)
+, CONSTRAINT fkgaleria_taller FOREIGN KEY (taller_id)
+REFERENCES taller(id)
+) ENGINE = InnoDB;
+
+
+
+#11
+CREATE TABLE galeriaclase(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, clase_id BIGINT
+, img TEXT 
+, CONSTRAINT pktgaleriaclase PRIMARY KEY(id)
+, CONSTRAINT fkgaleria_clase FOREIGN KEY (clase_id)
+REFERENCES clase(id)
+) ENGINE = InnoDB;
+
+
+#12
+CREATE TABLE galeriatratamiento(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, tratamiento_id BIGINT
+, img TEXT 
+, CONSTRAINT pktgaleriatratamiento PRIMARY KEY(id)
+, CONSTRAINT fkgaleria_tratamiento FOREIGN KEY (tratamiento_id)
+REFERENCES tratamiento(id)
+) ENGINE = InnoDB;
+
+
+#13
+# ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE historialclinico(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, usuario_id BIGINT
+, tratamiento_id BIGINT
+, fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+, CONSTRAINT pkthistorialclinico PRIMARY KEY(id)
+, CONSTRAINT fkusuario_tratamiento FOREIGN KEY (usuario_id)
+  REFERENCES usuario(id)
+, CONSTRAINT fktratamiento_usuario FOREIGN KEY (tratamiento_id)
+REFERENCES tratamiento(id)
+) ENGINE = InnoDB;
+
+#14
+CREATE TABLE aprendizaje(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, usuario_id BIGINT
+, clase_id BIGINT
+, fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+, CONSTRAINT pkaprendizaje PRIMARY KEY(id)
+, CONSTRAINT fkusuario_clase FOREIGN KEY (usuario_id)
+  REFERENCES usuario(id)
+, CONSTRAINT fkclase_usuario FOREIGN KEY (clase_id)
+REFERENCES clase(id)
+) ENGINE = InnoDB;
+
+
+#15
+CREATE TABLE sanacion(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, usuario_id BIGINT
+, taller_id BIGINT
+, fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+, CONSTRAINT pksanacion PRIMARY KEY(id)
+, CONSTRAINT fkusuario_taller FOREIGN KEY (usuario_id)
+  REFERENCES usuario(id)
+, CONSTRAINT fktaller_usuario FOREIGN KEY (taller_id)
+REFERENCES taller(id)
+) ENGINE = InnoDB;
+
+
+
+#16
+CREATE TABLE producto(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, precio DOUBLE NOT NULL
+, cantidad_disponible DOUBLE
+, nombre VARCHAR(100) NOT NULL
+, descripcion TEXT NOT NULL
+, CONSTRAINT pkproducto PRIMARY KEY(id)
+
+) ENGINE = InnoDB;
+
+
+#17
+CREATE TABLE galeriaproducto(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, producto_id BIGINT
+, img TEXT 
+, CONSTRAINT pktgaleriaproducto PRIMARY KEY(id)
+, CONSTRAINT fkgaleria_producto FOREIGN KEY (producto_id)
+REFERENCES producto(id)
+) ENGINE = InnoDB;
+
+
+
+#18
+CREATE TABLE beneficio(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, imgurl TEXT 
+, descripcion VARCHAR(100) NOT NULL
+, CONSTRAINT pkbeneficio PRIMARY KEY(id)
+) ENGINE = InnoDB;
+
+#19
+CREATE TABLE actuacontra(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, imgurl TEXT 
+, descripcion VARCHAR(100) NOT NULL
+, CONSTRAINT pktratamiento PRIMARY KEY(id)
+) ENGINE = InnoDB;
+
+
+#20
+CREATE TABLE productobeneficio(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, beneficio_id BIGINT
+, producto_id BIGINT
+, CONSTRAINT pkproducto_beneficio PRIMARY KEY(id)
+, CONSTRAINT fkproducto_beneficio FOREIGN KEY (producto_id)
+REFERENCES producto(id)
+, CONSTRAINT fkbeneficio_producto FOREIGN KEY (beneficio_id)
+REFERENCES beneficio(id)
+) ENGINE = InnoDB;
+
+#21
+#############3
+CREATE TABLE productoactuacontra(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, actuacontra_id BIGINT
+, producto_id BIGINT
+, CONSTRAINT pkproducto_actuacontra PRIMARY KEY(id)
+, CONSTRAINT fkproducto_actuacontra FOREIGN KEY (producto_id)
+REFERENCES producto(id)
+, CONSTRAINT fkactuacontra_producto FOREIGN KEY (actuacontra_id)
+REFERENCES actuacontra(id)
+) ENGINE = InnoDB;
+
+
+
+
+
+
+
+
+
+
+
+#22
+CREATE TABLE pago(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, total_texto VARCHAR(100)
+, total DOUBLE NOT NULL
+, fecha_pago DATETIME DEFAULT CURRENT_TIMESTAMP
+, createdAt DATE
+, updatedAt DATE
+, usuario_id BIGINT
+, metodopago_id BIGINT
+, CONSTRAINT pkpago PRIMARY KEY(id)
+, CONSTRAINT fkpagoproducto_usuario FOREIGN KEY (usuario_id)
+  REFERENCES usuario(id)
+, CONSTRAINT fkmetodopago_producto FOREIGN KEY (metodopago_id)
+  REFERENCES metodopago(id)
+) ENGINE = InnoDB;
+
+
+
+#23
+CREATE TABLE pagoproducto(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, subtotal_texto VARCHAR(100)
+, sutotal DOUBLE NOT NULL
+, pago_id BIGINT
+, producto_id BIGINT
+, CONSTRAINT pkpagoproducto PRIMARY KEY(id)
+, CONSTRAINT fkpagoproducto_pago FOREIGN KEY (pago_id)
+  REFERENCES pago(id)
+, CONSTRAINT fkpagoproducto_producto FOREIGN KEY (producto_id)
+  REFERENCES producto(id)
+) ENGINE = InnoDB;
+
+
+
+
+#24
+CREATE TABLE pagoclase(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, subtotal_texto VARCHAR(100)
+, sutotal DOUBLE NOT NULL
+, pago_id BIGINT
+, clase_id BIGINT
+, CONSTRAINT pkpagoclase PRIMARY KEY(id)
+, CONSTRAINT fkpagoclase_pago FOREIGN KEY (pago_id)
+  REFERENCES pago(id)
+, CONSTRAINT fkpagoclase_clase FOREIGN KEY (clase_id)
+  REFERENCES clase(id)
+) ENGINE = InnoDB;
+
+
+#25
+CREATE TABLE pagometodoanaluz(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, subtotal_texto VARCHAR(100)
+, sutotal DOUBLE NOT NULL
+, pago_id BIGINT
+, metodoanaluz_id BIGINT
+, CONSTRAINT pkpagometodoanaluz PRIMARY KEY(id)
+, CONSTRAINT fkpagometodoanaluz_pago FOREIGN KEY (pago_id)
+  REFERENCES pago(id)
+, CONSTRAINT fkpagometodoanluz_metodoanaluz FOREIGN KEY (metodoanaluz_id)
+  REFERENCES metodoanaluz(id)
+) ENGINE = InnoDB;
+
+
+
+#26
+CREATE TABLE pagotaller(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, subtotal_texto VARCHAR(100)
+, sutotal DOUBLE NOT NULL
+, pago_id BIGINT
+, taller_id BIGINT
+, CONSTRAINT pkpagotaller PRIMARY KEY(id)
+, CONSTRAINT fkpagotaller_pago FOREIGN KEY (pago_id)
+  REFERENCES pago(id)
+, CONSTRAINT fkpagotaller_taller FOREIGN KEY (taller_id)
+  REFERENCES taller(id)
+) ENGINE = InnoDB;
+
+
+#27
+CREATE TABLE pagotratamiento(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, subtotal_texto VARCHAR(100)
+, sutotal DOUBLE NOT NULL
+, pago_id BIGINT
+, tratamiento_id BIGINT
+, CONSTRAINT pkpagotratamiento PRIMARY KEY(id)
+, CONSTRAINT fkpagotratamiento_pago FOREIGN KEY (pago_id)
+  REFERENCES pago(id)
+, CONSTRAINT fkpagotratamiento_tratamiento FOREIGN KEY (tratamiento_id)
+  REFERENCES tratamiento(id)
+) ENGINE = InnoDB;
+
+
+
+
+#28
+CREATE TABLE testimonioclase(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, testimonio TEXT NOT NULL
+, fecha_testimonio DATETIME DEFAULT CURRENT_TIMESTAMP
+, createdAt DATE
+, updatedAt DATE
+, usuario_id BIGINT
+, clase_id BIGINT
+, CONSTRAINT pktestimonioclase PRIMARY KEY(id)
+, CONSTRAINT fktestimonioclase_usuario FOREIGN KEY (usuario_id)
+  REFERENCES usuario(id)
+, CONSTRAINT fktestimonioclase_clase FOREIGN KEY (clase_id)
+  REFERENCES clase(id)
+) ENGINE = InnoDB;
+
+
+
+
+
+#29
+CREATE TABLE testimonioproducto(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, testimonio TEXT NOT NULL
+, fecha_testimonio DATETIME DEFAULT CURRENT_TIMESTAMP
+, createdAt DATE
+, updatedAt DATE
+, usuario_id BIGINT
+, producto_id BIGINT
+, CONSTRAINT pktestimonioproducto PRIMARY KEY(id)
+, CONSTRAINT fktestimonioproducto_usuario FOREIGN KEY (usuario_id)
+  REFERENCES usuario(id)
+, CONSTRAINT fktestimonioproducto_producto FOREIGN KEY (producto_id)
+  REFERENCES producto(id)
+) ENGINE = InnoDB;
+
+
+
+
+#30
+CREATE TABLE testimoniometodoanaluz(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, testimonio TEXT NOT NULL
+, fecha_testimonio DATETIME DEFAULT CURRENT_TIMESTAMP
+, createdAt DATE
+, updatedAt DATE
+, usuario_id BIGINT
+, metodoanaluz_id BIGINT
+, CONSTRAINT pktestimoniometodoanaluz PRIMARY KEY(id)
+, CONSTRAINT fktestimoniometodoanaluz_usuario FOREIGN KEY (usuario_id)
+  REFERENCES usuario(id)
+, CONSTRAINT fktestimoniometodoanaluz_metodoanaluz FOREIGN KEY (metodoanaluz_id)
+  REFERENCES metodoanaluz(id)
+) ENGINE = InnoDB;
+
+
+
+
+#31
+CREATE TABLE testimoniotaller(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, testimonio TEXT NOT NULL
+, fecha_testimonio DATETIME DEFAULT CURRENT_TIMESTAMP
+, createdAt DATE
+, updatedAt DATE
+, usuario_id BIGINT
+, taller_id BIGINT
+, CONSTRAINT pktestimoniotaller PRIMARY KEY(id)
+, CONSTRAINT fktestimoniotaller_usuario FOREIGN KEY (usuario_id)
+  REFERENCES usuario(id)
+, CONSTRAINT fktestimoniotaller_taller FOREIGN KEY (taller_id)
+  REFERENCES taller(id)
+) ENGINE = InnoDB;
+
+
+
+
+#32
+CREATE TABLE testimoniotratamiento(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, testimonio TEXT NOT NULL
+, fecha_testimonio DATETIME DEFAULT CURRENT_TIMESTAMP
+, createdAt DATE
+, updatedAt DATE
+, usuario_id BIGINT
+, tratamiento_id BIGINT
+, CONSTRAINT pktestimoniotratamiento PRIMARY KEY(id)
+, CONSTRAINT fktestimoniotratamiento_usuario FOREIGN KEY (usuario_id)
+  REFERENCES usuario(id)
+, CONSTRAINT fktestimoniotratamiento_tratamiento FOREIGN KEY (tratamiento_id)
+  REFERENCES tratamiento(id)
+) ENGINE = InnoDB;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE testimonio(
+  id BIGINT NOT NULL AUTO_INCREMENT
+, estado TINYINT(4) NOT NULL DEFAULT '1'
+, testimonio TEXT NOT NULL
+, fecha_testimonio DATETIME DEFAULT CURRENT_TIMESTAMP
+, createdAt DATE
+, updatedAt DATE
+, usuario_id BIGINT
+, seccion_id BIGINT
+, CONSTRAINT pktestimonio PRIMARY KEY(id)
+, CONSTRAINT fktestimonio_usuario FOREIGN KEY (usuario_id)
+  REFERENCES usuario(id)
+, CONSTRAINT fktestimonio_seccion FOREIGN KEY g(seccion_id)
+  REFERENCES seccion(id)
+) ENGINE = InnoDB;
+

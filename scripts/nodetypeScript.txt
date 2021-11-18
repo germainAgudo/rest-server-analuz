@@ -1,0 +1,10 @@
+cd Documents\Developer\proyectos\analuz\rest-server
+
+nodemon dist/app.js
+
+
+
+tsc --watch
+
+
+

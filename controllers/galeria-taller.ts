@@ -1,7 +1,7 @@
 
 import { Request, Response } from "express";
 import GaleriaTaller from "../models/galeria-taller";
-// import path from "path";
+import path from "path";
 import fs  from "fs"
 import Taller from "../models/taller";
 
@@ -99,15 +99,35 @@ const {taller_id } = body;
 
 export const putGaleriaTaller = async ( req : Request, res : Response )=>{
  const { id } = req.params;
-    const { body } = req;
+    // const { body } = req;
 try {
-    const { img } = body;
-    const data ={
-        img:img.trim()
+    if (!req.file) {
+        return res.status(400).json({
+            msg: `La imagen es obligatoria`
+        })
     }
-    const galeriaTaller = await GaleriaTaller.findByPk( id );
-    await galeriaTaller?.update(data);
-    res.json(galeriaTaller);
+const galeria_taller  = await GaleriaTaller.findByPk(id);
+if (galeria_taller?.getDataValue('img') != null) {
+    const pathImagen = path.resolve(galeria_taller?.getDataValue('img'));
+
+    if (fs.existsSync( pathImagen )) {
+        fs.unlinkSync( pathImagen )
+    }
+}
+
+galeria_taller?.setDataValue('img', req.file?.path);
+galeria_taller?.save();
+res.json(galeria_taller);
+
+
+
+    // const { img } = body;
+    // const data ={
+    //     img:img.trim()
+    // }
+    // const galeriaTaller = await GaleriaTaller.findByPk( id );
+    // await galeriaTaller?.update(data);
+    // res.json(galeriaTaller);
 } catch (error) {
     console.log(error);
     res.status(500).json({

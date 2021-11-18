@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteGaleriaTaller = exports.putGaleriaTaller = exports.postGaleriaTaller = exports.getGaleriaTaller = exports.getGaleriasTalleres = void 0;
 const galeria_taller_1 = __importDefault(require("../models/galeria-taller"));
-// import path from "path";
+const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const taller_1 = __importDefault(require("../models/taller"));
 const getGaleriasTalleres = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -97,16 +97,32 @@ const postGaleriaTaller = (req, res) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.postGaleriaTaller = postGaleriaTaller;
 const putGaleriaTaller = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const { id } = req.params;
-    const { body } = req;
+    // const { body } = req;
     try {
-        const { img } = body;
-        const data = {
-            img: img.trim()
-        };
-        const galeriaTaller = yield galeria_taller_1.default.findByPk(id);
-        yield (galeriaTaller === null || galeriaTaller === void 0 ? void 0 : galeriaTaller.update(data));
-        res.json(galeriaTaller);
+        if (!req.file) {
+            return res.status(400).json({
+                msg: `La imagen es obligatoria`
+            });
+        }
+        const galeria_taller = yield galeria_taller_1.default.findByPk(id);
+        if ((galeria_taller === null || galeria_taller === void 0 ? void 0 : galeria_taller.getDataValue('img')) != null) {
+            const pathImagen = path_1.default.resolve(galeria_taller === null || galeria_taller === void 0 ? void 0 : galeria_taller.getDataValue('img'));
+            if (fs_1.default.existsSync(pathImagen)) {
+                fs_1.default.unlinkSync(pathImagen);
+            }
+        }
+        galeria_taller === null || galeria_taller === void 0 ? void 0 : galeria_taller.setDataValue('img', (_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
+        galeria_taller === null || galeria_taller === void 0 ? void 0 : galeria_taller.save();
+        res.json(galeria_taller);
+        // const { img } = body;
+        // const data ={
+        //     img:img.trim()
+        // }
+        // const galeriaTaller = await GaleriaTaller.findByPk( id );
+        // await galeriaTaller?.update(data);
+        // res.json(galeriaTaller);
     }
     catch (error) {
         console.log(error);

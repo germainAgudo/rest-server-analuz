@@ -1,0 +1,37 @@
+
+router.put('/:coleccion/:id'
+,
+    [
+        validarJWT
+        , esAdminRole
+        , check('id','El id es obligatorio').not().isEmpty()
+        , check('id').custom( existeMetodoPagoPorId)  
+        , check('coleccion').custom(c=>coleccionesPermitidas
+            (c,[
+            'actualizar-imagen'
+          
+        ]) )
+        , validarCampos   
+    ],
+    uploads_metodoPago
+    , 
+putUploadImagen
+);
+router.get('/:coleccion/:id'
+,
+    [
+        validarJWT
+        , esAdminRole
+        , check('id','El id es obligatorio').not().isEmpty()
+        , check('id').custom( existeMetodoPagoPorId)  
+        , check('coleccion').custom(c=>coleccionesPermitidas
+            (c,[
+            'obtener-imagen'
+          
+        ]) )
+        , validarCampos   
+    ],
+    // uploads_metodoPago
+    // , 
+getUploadImagen
+);
